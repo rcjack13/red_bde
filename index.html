@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SORRY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('assests/images/background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        /* Common Styles */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .text-content {
+            text-align: center;
+        }
+
+        .big-text {
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: bold;
+            color: #ff0400;
+            margin: 0 0 15px 0;
+        }
+
+        .small-text {
+            font-size: clamp(16px, 4vw, 24px);
+            color: #ff0400;
+            margin: 0;
+        }
+
+        .back-button {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .back-button:hover {
+            transform: scale(1.15);
+        }
+
+        .back-button img {
+            width: 100%;
+            max-width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: clamp(24px, 5vw, 32px);
+        }
+
+        .modal-content p {
+            margin: 0 0 30px 0;
+            color: #666;
+            font-size: clamp(14px, 3vw, 18px);
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-close, .next-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover, .next-button:hover {
+            background: #c0392b;
+        }
+
+        .next-button {
+            background: #3498db;
+        }
+
+        .next-button:hover {
+            background: #2980b9;
+        }
+
+        /* Landing Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .gif-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif-container img {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            display: block;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .icon-button {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-button:hover {
+            transform: scale(1.15);
+        }
+
+        .icon-button img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            display: block;
+        }
+
+        /* Envelope Page Styles */
+        .envelope-container {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .envelope-wrapper {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        .envelope-wrapper img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            display: block;
+        }
+
+        /* Dont Page Styles */
+        .icon-wrapper {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-wrapper img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                gap: 20px;
+            }
+
+            .gif-container img {
+                max-width: 180px;
+            }
+
+            .button-container {
+                gap: 20px;
+            }
+
+            .icon-button img {
+                max-width: 120px;
+            }
+
+            .envelope-container {
+                gap: 20px;
+            }
+
+            .envelope-wrapper img {
+                max-width: 150px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            .modal-buttons {
+                gap: 10px;
+            }
+
+            .modal-close, .next-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="page active" id="landingPage">
+        <div class="container">
+            <div class="gif-container">
+                <img src="assests/images/landing.gif" alt="Landing GIF">
+            </div>
+            <div class="text-content">
+                <h1 class="big-text">HEY NOONA!</h1>
+                <p class="small-text">Would you like to see what's inside?</p>
+            </div>
+            <div class="button-container">
+                <div class="icon-button" id="checkBtn">
+                    <img src="assests/images/check.png" alt="Yes - Go to Envelope">
+                </div>
+                <div class="icon-button" id="crossBtn">
+                    <img src="assests/images/cross.png" alt="No - Go to Dont">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Envelope Page -->
+    <div class="page" id="envelopePage">
+        <div class="container">
+            <div class="text-content">
+                <h1 class="big-text">FLOWERS FOR YOU</h1>
+                <p class="small-text">Please click on the two images</p>
+            </div>
+            <div class="envelope-container">
+                <div class="envelope-wrapper" id="envelopeBtn">
+                    <img src="assests/images/envelope.png" alt="Envelope">
+                </div>
+                <div class="envelope-wrapper" id="flowerBtn">
+                    <img src="assests/images/flower.png" alt="Flower">
+                </div>
+            </div>
+            <button class="back-button" id="envelopeBackBtn">
+                <img src="assests/images/back.png" alt="Back">
+            </button>
+        </div>
+    </div>
+
+    <!-- Dont Page -->
+    <div class="page" id="dontPage">
+        <div class="container">
+            <div class="gif-container">
+                <img src="assests/images/dont.gif" alt="Dong GIF">
+            </div>
+            <div class="text-content">
+                <h1 class="big-text">PLEASE NOONAAAAAAAA?</h1>
+                <p class="small-text">Wag naman Ate Shena</p>
+            </div>
+            <button class="back-button" id="dontBackBtn">
+                <img src="assests/images/back.png" alt="Back">
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Hi Noona,</h2>
+            <p id="modalMessage">Message</p>
+            <div class="modal-buttons">
+                <button class="next-button" id="nextBtn">Next</button>
+                <button class="modal-close" id="closeBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        const landingPage = document.getElementById('landingPage');
+        const envelopePage = document.getElementById('envelopePage');
+        const dontPage = document.getElementById('dontPage');
+
+        const checkBtn = document.getElementById('checkBtn');
+        const crossBtn = document.getElementById('crossBtn');
+        const envelopeBackBtn = document.getElementById('envelopeBackBtn');
+        const dontBackBtn = document.getElementById('dontBackBtn');
+
+        // Modal Elements
+        const messageModal = document.getElementById('messageModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Envelope/Flower Elements
+        const flowerBtn = document.getElementById('flowerBtn');
+        const envelopeBtn = document.getElementById('envelopeBtn');
+
+        // Messages
+        const flowerMessages = [
+            {
+                title: "This is a flower",
+                message: "This is a flower my peace offering. Kasi diba sabi mo, nakakatanggal ng angas ang IRL flower?"
+            }
+        ];
+
+        const envelopeMessages = [
+            {
+                title: "Hi Noona,",
+                message: "I'm writing this because I know my handwriting is really bad and I don't want to embarrass myself further, so I wrote this simple note to show my sincerity. I'll keep it short because I know you hate long messages."
+            },
+            {
+                title: "I'm Sorry...",
+                message: "I'm really sorry for how I acted being late, making you wait, not bringing the jacket I offered, and not opening the door for you. I realize I let you down, and I feel disappointed in myself too."
+            },
+            {
+                title: "I Want to Do Better",
+                message: "I want to do better and show you that I can. I hope you can forgive me or give me another chance, but I understand if you can't. Thank you for hearing me out."
+            }
+        ];
+
+        let currentMessageIndex = 0;
+        let currentMessageSet = [];
+
+        // Page Navigation Functions
+        function showPage(page) {
+            landingPage.classList.remove('active');
+            envelopePage.classList.remove('active');
+            dontPage.classList.remove('active');
+            page.classList.add('active');
+        }
+
+        checkBtn.addEventListener('click', function() {
+            showPage(envelopePage);
+        });
+
+        crossBtn.addEventListener('click', function() {
+            showPage(dontPage);
+        });
+
+        envelopeBackBtn.addEventListener('click', function() {
+            showPage(landingPage);
+        });
+
+        dontBackBtn.addEventListener('click', function() {
+            showPage(landingPage);
+        });
+
+        // Modal Functions
+        flowerBtn.addEventListener('click', function() {
+            currentMessageIndex = 0;
+            currentMessageSet = flowerMessages;
+            updateModal();
+            messageModal.classList.add('active');
+        });
+
+        envelopeBtn.addEventListener('click', function() {
+            currentMessageIndex = 0;
+            currentMessageSet = envelopeMessages;
+            updateModal();
+            messageModal.classList.add('active');
+        });
+
+        function updateModal() {
+            modalTitle.textContent = currentMessageSet[currentMessageIndex].title;
+            modalMessage.textContent = currentMessageSet[currentMessageIndex].message;
+            
+            if (currentMessageIndex === currentMessageSet.length - 1) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+            }
+        }
+
+        nextBtn.addEventListener('click', function() {
+            if (currentMessageIndex < currentMessageSet.length - 1) {
+                currentMessageIndex++;
+                updateModal();
+            }
+        });
+
+        closeBtn.addEventListener('click', function() {
+            messageModal.classList.remove('active');
+        });
+
+        messageModal.addEventListener('click', function(e) {
+            if (e.target === messageModal) {
+                messageModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
